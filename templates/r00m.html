@@ -1,0 +1,81 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="../static/css/output.css">
+  <!-- Persoal CSS File -->
+  <link rel="stylesheet" href="../static/css/room.css">
+</head>
+<body>
+  
+  <div class="message-box flex flex-col items-center justify-center border-2 w-screen h-screen">
+ <!-- The container of the chat -->
+    <h2 class="title text-center "> Chat Room: {{room}}</h2>
+    <div class="messages" id="messages"></div> <!-- Empty div for scrollable  -->
+    <div class="inputs gap-2">
+      <input 
+        type="text"
+        rows="3"
+        placeholder="Message"
+        name="message"
+        id="message"
+        class="input-box"
+      />
+      <button 
+        type="button" 
+        name="send" 
+        id="send-btn" 
+        onclick="sendMessage()"
+        class="send-btn"
+        >Send</button>
+    </div>
+  </div>
+
+  <!-- Socket.IO client (required for io()) -->
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script type="text/javascript">
+    // keep your original name and also map the one you use later
+    var socketui = io();
+    var socketio = socketui; // preserves both names without renaming later code
+
+    const messages = document.getElementById("messages");
+
+    const createMessage = (name, msg) => {
+      const content = `
+        <div class="text">
+          <span>
+            <strong>${name}</strong>: ${msg}
+          </span>
+          <span class="muted">
+            ${new Date().toLocaleString()}
+          </span>
+        </div>
+      `;
+      messages.innerHTML += content;
+    };
+
+    // fixed arrow function syntax
+    socketio.on("message", (data) => {
+      createMessage(data.name, data.message);
+    });
+
+    const sendMessage = () => {
+      // fixed typo in getElementById
+      const message = document.getElementById("message");
+      if (message.value == "") return;
+      socketio.emit("message", { data: message.value });
+      message.value = "";
+    };
+  </script>
+
+  <script type="text/javascript">
+    createMessage("{{msg.name}}", "{{msg.message}}");
+  </script>
+
+
+
+</body>
+</html>

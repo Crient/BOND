@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="message-box flex flex-col border-2 w-screen h-screen items-center justify-center ">
+  <h2 class="title text-center">Chat Room: {{ room }}</h2>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="inputs gap-2">
+    <input
+      type="text"
+      placeholder="Message"
+      name="message"
+      id="message"
+      class="input-box"
+    />
+    <button
+      type="button"
+      name="send"
+      id="send-btn"
+      class="send-btn"
+    >
+      Send
+    </button>
+  </div>
+</div>
+
+<!-- Socket.IO client -->
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  // socket
+  const socket = io();
+  socket.emit('join', {joined: true}); 
+
+  // DOM refs
+  const messagesEl = document.getElementById('messages');
+  const inputEl = document.getElementById('message');
+  const sendBtn = document.getElementById('send-btn');
+
+  function createMessage(name, msg) {
+    const content = `
+      <div class="text">
+        <span class="text-black"><strong>${name}</strong>: ${msg}</span>
+        <span class="muted">${new Date().toLocaleString()}</span>
+      </div>
+    `;
+    messagesEl.insertAdjacentHTML('beforeend', content);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  socket.on('message', (data) => {
+    createMessage(data.name, data.message);
+  });
+
+  function sendMessage() {
+    const value = inputEl.value.trim();
+    if (!value) return;
+    socket.emit('message', { data: value });
+    inputEl.value = '';
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') sendMessage();
+  });
+</script>
+
+{% for msg in messages %}
+<script>
+  createMessage("{{ msg.name }}", "{{ msg.message }}");
+</script>
+{% endfor %}
+
+{% endblock %}
