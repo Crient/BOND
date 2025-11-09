@@ -28,6 +28,7 @@ def home():
         code = request.form.get('code')
         join = request.form.get('join', False)
         create = request.form.get('create', False)
+        capacity = request.form.get('capacity', '10')  # Get capacity from form
 
         if not name:
             return render_template('home.html', error="Please enter a name.", code=code, name=name)
@@ -37,15 +38,31 @@ def home():
         room = code
         if create != False:
             room = generate_unique_code(4)
-            rooms[room] = {"members": 0, "messages": []}
+            try:
+                max_capacity = int(capacity)
+                if max_capacity < 1:
+                    max_capacity = 10
+            except:
+                max_capacity = 10
+
+            rooms[room] = {
+                "members": 0,
+                "messages": [],
+                "capacity": max_capacity,
+                "host": name
+            }
         elif code not in rooms:
             return render_template('home.html', error="Room does not exist.", code=code, name=name)
+        else:
+            # Check if room is full
+            if rooms[code]["members"] >= rooms[code]["capacity"]:
+                return render_template('home.html', error="Room is full.", code=code, name=name)
 
         #semi-permanent way to store info about a user
         session["room"] = room
         session["name"] = name
         return redirect(url_for("room"))
-
+ 
     return render_template('home.html')
 
 @app.route("/room")
@@ -54,7 +71,15 @@ def room():
     name = session.get("name")
     if room is None or name is None or room not in rooms:
         return redirect(url_for("home"))
-    return render_template("room.html", room=room, name=name, messages=rooms[room]["messages"])
+
+    is_host = (rooms[room].get("host") == name)
+    return render_template("room.html",
+                           room=room,
+                           name=name,
+                           messages=rooms[room]["messages"],
+                           capacity=rooms[room]["capacity"],
+                           current_members=rooms[room]["members"],
+                           is_host=is_host)
 
 @socketio.on('join')
 def handle_join(message):
@@ -86,7 +111,7 @@ def disconnect():
             del rooms[room]
 
         send({'name': name,
-              'message': ['has left the room'],
+              'message': 'has left the room',
               })
 
 @socketio.on('message')
@@ -102,7 +127,26 @@ def message(data):
     }
     send(content, to=room)
     rooms[room]['messages'].append(content)
-    print(f"{session.get['name']} said: {data['data']}")
+    print(f"{session.get('name')} said: {data['data']}")
+
+@socketio.on('update_capacity')
+def update_capacity(data):
+    room = session.get("room")
+    name = session.get("name")
+
+    if room not in rooms or rooms[room].get("host") != name:
+        return  # Only host can update capacity
+
+    try:
+        new_capacity = int(data['capacity'])
+        if new_capacity >= rooms[room]["members"]:  # Can't set lower than current members
+            rooms[room]["capacity"] = new_capacity
+            send({
+                'name': 'System',
+                'message': f'Room capacity updated to {new_capacity}'
+            }, to=room)
+    except:
+        pass
 
 if __name__=='__main__':
     socketio.run(app, debug=True,allow_unsafe_werkzeug=True)
