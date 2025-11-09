@@ -1,55 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
 <form method="post" action="{{ url_for('home') }}">
-  <div class="on-container-color flex flex-col justify-evenly items-center min-h-screen">
-    <div class="flex flex-col justify-center px-8 py-10 backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl shadow-2xl w-full max-w-md">
+  <div class="on-container-color min-h-screen flex items-center justify-center">
+    <div class="flex flex-col justify-center px-14 py-12 backdrop-blur-lg bg-white/10 border border-white/20 rounded-2xl shadow-2xl">
 
-      <h2 class="text-center text-5xl font-bold text-white mt-10">ENTER A CHATROOM</h2>
+      <h2 class="chat-title text-center font-extrabold text-white">
+        ENTER A CHATROOM
+      </h2>
 
-      <div class="mt-8 space-y-4">
-        <label class="block text-sm text-white">Name</label>
-        <input
-          type="text"
-          name="name"
-          value="{{ name or '' }}"
-          placeholder="Pick a name!"
-          class="border block w-full rounded-md bg-white/5 px-3 py-2 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-white/60"
-          required
-        />
+      <!-- WIDTH CAP: all fields/buttons live inside this narrow column -->
+      <div class="mx-auto w-[520px] max-w-[92vw]">
 
-        <label class="block text-sm text-white mt-4">Room Code</label>
-        <input
-          type="text"
-          name="code"
-          value="{{ code or '' }}"
-          placeholder="e.g. ABCD"
-          class="border block w-full rounded-md bg-white/5 px-3 py-2 text-white placeholder:text-gray-400 focus:ring-2 focus:ring-white/60"
-        />
+        <!-- Name -->
+        <div class="name-section flex justify-center items-center gap-2">
+            <input
+              type="text"
+              name="name"
+              value="{{ name or '' }}"
+              placeholder="Pick a name!"
+              class="border-1 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-black-600
+                focus:outline-1 focus:outline-black-500 sm:text-sm"
+            />
+        </div>
 
-        <div class="flex items-center gap-3 mt-6">
+        <!-- Room + Join (inline) -->
+        <div class="room-join-section flex justify-center items-center gap-2">
+          <input
+            type="text"
+            name="code"
+            value="{{ code or '' }}"
+            placeholder="e.g. ABCD"
+            class="
+            border-1 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-black-600
+                focus:outline-1 focus:outline-black-500 sm:text-sm"
+            
+          />
           <button
             type="submit"
             name="join"
             value="1"
-            class="bg-green-600 hover:bg-green-700 text-white font-medium rounded-full text-sm px-5 py-2.5"
+            class="
+            text-white-900 bg-green-600 hover:bg-gray-100
+                         focus:ring-gray-100 font-medium rounded-md text-sm px-5 py-1.5"
+                         
           >
             Join
           </button>
-
-          <button
-            type="submit"
-            name="create"
-            value="1"
-            class="bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full text-sm px-5 py-2.5"
-          >
-            Create a room
-          </button>
         </div>
 
+        <!-- Create full-width (but only as wide as this inner column) -->
+        <button
+          type="submit"
+          name="create"
+          value="1"
+          class="create-room-btn flex w-full justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold text-white
+                       hover:bg-red-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500">
+          Create your own room!
+        </button>
+
+
         {% if error %}
-          <p class="mt-4 text-sm text-red-200">{{ error }}</p>
+          <p class="error">{{ error }}</p>
         {% endif %}
       </div>
+      <!-- /inner width cap -->
+
     </div>
   </div>
 </form>

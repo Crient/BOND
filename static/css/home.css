@@ -135,9 +135,8 @@ width: 100vw;
   margin: 0;
   line-height: 1;
   font-family: CashDisplay;  
-  width: 70vw;  
   align-items: center;  
-     
+  width: min(92vw, 720px);
 }
 
 .content{
@@ -246,3 +245,40 @@ width: 100vw;
   position: relative;
   z-index: 2;                  /* above the blur layer */
 }
+
+input::placeholder { 
+  font-weight: 400; 
+  opacity: .9; 
+}
+
+.chat-title{
+  font-size: 70px;
+}
+.name-section{  
+  margin-top: 20px;
+  width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+
+.room-join-section{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+
+.create-room-btn{
+   width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+.error {
+  color: #ff7b7b;           /* soft red */
+  font-weight: 500;
+  text-align: center;
+  margin-top: 20px;
+  letter-spacing: 0.5px;
+}
+
