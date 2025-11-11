@@ -143,8 +143,6 @@ width: 100vw;
   border: black 2px;
 }
 
-
-
 .message-box {
   border-color: black;
   border-width: 2px;
@@ -248,11 +246,15 @@ width: 100vw;
 
 input::placeholder { 
   font-weight: 400; 
-  opacity: .9; 
+  opacity: 0.9; 
 }
 
 .chat-title{
-  font-size: 70px;
+  font-size: 100px;
+}
+
+.chat-sub-title{
+  font-size: 25px;
 }
 .name-section{  
   margin-top: 20px;
@@ -269,8 +271,22 @@ input::placeholder {
   margin-right: auto;  /* centers it */
 }
 
+.divider-section{
+  margin: 10px auto;
+  width: 90%;
+  margin-top: 10px;
+}
+
+
+.capacity-section{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
 .create-room-btn{
-   width: 90%;          /* takes up 90% of the parent (the card) */
+  width: 70%;          /* takes up 90% of the parent (the card) */
   margin-left: auto;   /* centers it */
   margin-right: auto;  /* centers it */
 }
@@ -282,3 +298,8 @@ input::placeholder {
   letter-spacing: 0.5px;
 }
 
+
+.Enter-text{
+  size: 100px;
+  text-color: black;
+}

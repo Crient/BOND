@@ -2,10 +2,38 @@
 {% block content %}
 
 <div class="message-box flex flex-col border-2 w-screen h-screen items-center justify-center ">
-  <h2 class="title text-center">Chat Room: {{ room }}</h2>
+  <h2 class="title text-center font-bold">Chat Room: {{ room }}</h2>
+
+<!-- Header utilities row -->
+<div class="Members-alter-section items-center">
+  <div class="flex items-center justify-between ">
+    <!-- Left: members -->
+    <p class="current_members-section text-base font-semibold m-0">
+      Members: {{ current_members }} / {{ capacity }}
+    </p>
+
+    <!-- Right: host controls -->
+    {% if is_host %}
+    <div class="flex items-center gap-2 shrink-0">
+      <input
+        id="newCapacity"
+        type="number"
+        min="{{ current_members }}"
+        placeholder="Room Size"
+        class="rounded-md px-3 py-2 border border-gray-300 text-black bg-white/90"
+      />
+      <button
+        id="capBtn"
+        class="bg-green-600 hover:bg-green-700 text-white font-medium rounded-md text-sm px-5 py-1.5 transition-colors duration-200"
+      >
+        Update
+      </button>
+    </div>
+    {% endif %}
+  </div>
+</div>
 
   <div class="messages" id="messages"></div>
-
   <div class="inputs gap-2">
     <input
       type="text"
@@ -38,6 +66,20 @@
   const inputEl = document.getElementById('message');
   const sendBtn = document.getElementById('send-btn');
 
+  // NEW: members label and host controls
+  const membersEl = document.querySelector('.current_members-section');
+  {% if is_host %}
+  const capBtn = document.getElementById('capBtn');
+  const newCapInput = document.getElementById('newCapacity');
+  if (capBtn && newCapInput) {
+    capBtn.addEventListener('click', () => {
+      const val = (newCapInput.value || '').trim();
+      if (!val) return;
+      socket.emit('update_capacity', { capacity: val });
+    });
+  }
+  {% endif %}
+
   function createMessage(name, msg) {
     const content = `
       <div class="text">
@@ -49,8 +91,33 @@
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
+  // helper: update the "Members: x / y" label
+  function setMembersLabel(curr, cap) {
+    if (!membersEl) return;
+    membersEl.textContent = `Members: ${curr} / ${cap}`;
+    // optional highlight when full or over
+    const nCurr = parseInt(curr, 10), nCap = parseInt(cap, 10);
+    if (!isNaN(nCurr) && !isNaN(nCap) && nCurr >= nCap) {
+      membersEl.classList.add('text-red-600');
+    } else {
+      membersEl.classList.remove('text-red-600');
+    }
+  }
+
   socket.on('message', (data) => {
     createMessage(data.name, data.message);
+
+    // live update capacity when host changes it
+    if (data.name === 'System' && typeof data.message === 'string') {
+      const m = data.message.match(/Room capacity updated to\s+(\d+)/i);
+      if (m) {
+        // keep current member count from label
+        const text = membersEl?.textContent || '';
+        const currMatch = text.match(/Members:\s*(\d+)\s*\/\s*\d+/i);
+        const currentMembers = currMatch ? currMatch[1] : '{{ current_members }}';
+        setMembersLabel(currentMembers, m[1]);
+      }
+    }
   });
 
   function sendMessage() {
@@ -71,5 +138,7 @@
   createMessage("{{ msg.name }}", "{{ msg.message }}");
 </script>
 {% endfor %}
+
+
 
 {% endblock %}

@@ -13,6 +13,14 @@ body {
   font-family: system-ui, sans-serif;
 }
 
+.current_members-section{
+  color: blue;
+}
+
+.Members-alter-section{
+  padding-left: 10px;
+}
+
 .message-box {
   border-color: black;
   border-width: 2px;
@@ -155,4 +163,65 @@ body {
 /* Your input was overflowing the box because of 100vw */
 .input-box{
   width: 100%;   /* not 100vw */
+}
+
+.Members-alter-section {
+  width: 100%;
+  padding-right: 10px;
+}
+
+.Members-alter-section > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Members text */
+.current_members-section {
+  color: #1DB954;
+  font-weight: 600;
+  font-size: 15px; /* smaller text */
+  font-weight: bold;
+  margin-top: -10px;
+
+}
+
+/* Host control layout */
+.Members-alter-section .flex.items-center.gap-2 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 10px;
+}
+
+/* Input */
+#newCapacity {
+  color: #000;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100px;        /* narrower width */
+  padding: 0.25rem 0.5rem;  /* smaller padding */
+  font-size: 0.75rem;  /* smaller font */
+}
+
+/* Button */
+#capBtn {
+  background-color: #16a34a; /* green-600 */
+  color: #fff;
+  font-weight: 500;
+  border-radius: 5px;
+  font-size: 0.8rem;       /* smaller font */
+  padding: 0.25rem 0.9rem; /* smaller size */
+  transition: background-color 0.2s ease;
+}
+
+#capBtn:hover {
+  background-color: #15803d; /* darker green hover */
+}
+
+.box-card{
+  width: 90%;
+  height: 80%;
 }
