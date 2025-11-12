@@ -1,6 +1,7 @@
 #run commands in pycharm terminal to install flask and socketio
 #pip install Flask
 #pip install flask-socketio
+
 from socket import SocketIO
 
 from flask import Flask, render_template, request, session, redirect, url_for
@@ -14,11 +15,13 @@ socketio = SocketIO(app)
 
 rooms = {}
 
+
 def generate_unique_code(Length):
     while True:
         code = "".join(random.choice(ascii_uppercase) for _ in range(Length))
         if code not in rooms:
             return code
+
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
@@ -58,12 +61,13 @@ def home():
             if rooms[code]["members"] >= rooms[code]["capacity"]:
                 return render_template('home.html', error="Room is full.", code=code, name=name)
 
-        #semi-permanent way to store info about a user
+        # semi-permanent way to store info about a user
         session["room"] = room
         session["name"] = name
         return redirect(url_for("room"))
- 
+
     return render_template('home.html')
+
 
 @app.route("/room")
 def room():
@@ -81,6 +85,7 @@ def room():
                            current_members=rooms[room]["members"],
                            is_host=is_host)
 
+
 @socketio.on('join')
 def handle_join(message):
     room = session.get("room")
@@ -91,28 +96,40 @@ def handle_join(message):
         leave_room(room)
         return
 
+    rooms[room]['members'] += 1
     join_room(room)
     send({
         'name': name,
         'message': 'has entered the room'}, to=room)
-    rooms[room]['members'] += 1
-    print(f"{name}: joined room {room}")
+    socketio.emit('member_update', {
+        'members': rooms[room]['members'],
+        'capacity': rooms[room]['capacity'],
+    }, room=room)
 
-@socketio.on('leave')
+
+@socketio.on('disconnect')
 def disconnect():
     room = session.get("room")
     name = session.get("name")
     leave_room(room)
 
-    #member count(if 0, room is deleted)
+    # member count(if 0, room is deleted)
     if room in rooms:
         rooms[room]["members"] -= 1
-        if rooms[room]["members"] <= 0:
-            del rooms[room]
+        new_members = rooms[room]["members"]
 
-        send({'name': name,
-              'message': 'has left the room',
-              })
+        send({
+            'name': name,
+            'message': 'has left the room'}, to=room)
+
+        if new_members > 0:
+            socketio.emit('member_update', {
+                'members': new_members,
+                'capacity': rooms[room]["capacity"],
+            }, room=room)
+
+        if new_members <= 0:
+            del rooms[room]
 
 @socketio.on('message')
 def message(data):
@@ -121,13 +138,14 @@ def message(data):
         return
 
     content = {
-        'name':session.get('name'),
-        'message':data['data'],
+        'name': session.get('name'),
+        'message': data['data'],
 
     }
     send(content, to=room)
     rooms[room]['messages'].append(content)
     print(f"{session.get('name')} said: {data['data']}")
+
 
 @socketio.on('update_capacity')
 def update_capacity(data):
@@ -148,5 +166,6 @@ def update_capacity(data):
     except:
         pass
 
-if __name__=='__main__':
-    socketio.run(app, debug=True,allow_unsafe_werkzeug=True)
+
+if __name__ == '__main__':
+    socketio.run(app, debug=True, allow_unsafe_werkzeug=True)

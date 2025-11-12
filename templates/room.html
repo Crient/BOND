@@ -104,6 +104,12 @@
     }
   }
 
+  // Updates Live User Counter
+  socket.on('member_update', (data) => {
+    console.log(`Received member update: ${data.members} / ${data.capacity}`);
+    setMembersLabel(data.members, data.capacity);
+  });
+
   socket.on('message', (data) => {
     createMessage(data.name, data.message);
 
