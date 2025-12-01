@@ -17,6 +17,10 @@ rooms = {}
 
 
 def generate_unique_code(Length):
+    """
+    -Returns a random string of uppercase letters and digits
+    -No Duplicate codes
+    """
     while True:
         code = "".join(random.choice(ascii_uppercase) for _ in range(Length))
         if code not in rooms:
@@ -25,6 +29,9 @@ def generate_unique_code(Length):
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
+    """
+    -Renders the home page, and handles room creation/joining
+    """
     session.clear()
     if request.method == 'POST':
         name = request.form.get('name')
@@ -71,6 +78,11 @@ def home():
 
 @app.route("/room")
 def room():
+    """
+    -Renders the chat room page
+    -Ensures user belongs to a valid room
+    -Distinction between host screen and member screen
+    """
     room = session.get("room")
     name = session.get("name")
     if room is None or name is None or room not in rooms:
@@ -88,6 +100,11 @@ def room():
 
 @socketio.on('join')
 def handle_join(message):
+    """
+    -Handles a user joining a room
+    -Updates member count
+    -Notifies room members
+    """
     room = session.get("room")
     name = session.get("name")
     if not room or not name:
@@ -109,6 +126,12 @@ def handle_join(message):
 
 @socketio.on('disconnect')
 def disconnect():
+    """
+    -Handles a user disconnecting
+    -Updates room count
+    -Notifies room members
+    -Deletes room if empty
+    """
     room = session.get("room")
     name = session.get("name")
     leave_room(room)
@@ -133,6 +156,10 @@ def disconnect():
 
 @socketio.on('message')
 def message(data):
+    """
+    -Handles messages sent by clients
+    -Displays message in the chat
+    """
     room = session.get("room")
     if room not in rooms:
         return
@@ -149,6 +176,10 @@ def message(data):
 
 @socketio.on('update_capacity')
 def update_capacity(data):
+    """
+    -Handles Host updating capacity
+    -Notifies room members
+    """
     room = session.get("room")
     name = session.get("name")
 
