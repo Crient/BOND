@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="post" action="{{ url_for('home') }}">
+  <div class="on-container-color min-h-screen flex items-center justify-center">
+    <div class="box-card flex flex-col justify-center px-14 py-12 
+  backdrop-blur-2xl bg-white/25 rounded-2xl shadow-2xl shadow-white/10 text-white">
+
+      <h1 class="chat-title text-center font-extrabold text-white">
+        BOND
+      </h1>
+      <h2 class=" chat-sub-title text-center ">
+        ENTER A CHATROOM
+      </h2>
+
+      <!-- WIDTH CAP: all fields/buttons live inside this narrow column -->
+      <div class="mx-auto w-[520px] max-w-[92vw]">
+
+        <!-- Name -->
+        <div class="name-section flex justify-center items-center gap-2">
+            <input
+              type="text"
+              name="name"
+              value="{{ name or '' }}"
+              placeholder="Pick a name!"
+              class="border-1 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-black-600
+              focus:outline-1 focus:outline-black-500 sm:text-sm"
+            />
+        </div>
+
+        <!-- Room + Join (inline) -->
+        <div class="room-join-section flex justify-center items-center gap-2">
+          <input
+            type="text"
+            name="code"
+            value="{{ code or '' }}"
+            placeholder="e.g. ABCD"
+            class="
+            border-1 block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-black-600
+            focus:outline-1 focus:outline-black-500 sm:text-sm"
+          />
+          <button
+            type="submit"
+            name="join"
+            value="1"
+            class="
+            text-white-900 bg-green-600 hover:bg-gray-100
+            focus:ring-gray-100 font-medium rounded-md text-sm px-5 py-1.5"              
+          >
+            Join
+          </button>
+        </div>
+
+        <div class="divider-section border block rounded-md bg-white/5 px-3 text-base text-white pt-5"></div>
+
+        <!-- Create full-width (but only as wide as this inner column) -->
+        <!-- Capacity (used when creating a room) -->
+        <div class="flex capacity-section gap-2">
+          <input
+            type="number"
+            name="capacity"
+            min="1"
+            placeholder="Max capacity (default 10)"
+            class="border block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white placeholder:text-gray-300 text-left focus:outline-none focus:ring-2 focus:ring-red-400 sm:text-sm"
+
+          />
+        <button
+          type="submit"
+          name="create"
+          value="1"
+          class="create-room-btn items-center flex justify-center rounded-md bg-red-500 px-1 py-1.5 text-sm font-semibold text-white
+                       hover:bg-red-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500
+                       ">
+          Create room!
+        </button>
+        </div>
+
+
+        {% if error %}
+          <p class="error">{{ error }}</p>
+        {% endif %}
+      </div>
+      <!-- /inner width cap -->
+
+    </div>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,305 @@
+@font-face {
+  font-family: Spotify-Bold;
+  src: url(font/CircularSpotifyText-Bold.otf);
+}
+
+* {
+  font-family: "Spotify-Bold";  
+}
+
+.section-1{
+background-color:red;
+height: 80vh; 
+width: 100vw;
+}
+.section-2{
+background-color: pink;
+height: 50vh; 
+width: 100vw;
+}
+.section-3{
+background-color: green;
+height: 50vh; 
+width: 100vw;
+}
+.section-4{
+background-color:orange;
+height: 50vh; 
+width: 100vw;
+}
+.section-5{
+background-color:fuchsia;
+height: 50vh; 
+width: 100vw;
+}
+
+
+:root{
+  /* pure grayscale ramps */
+  --g0: #0a0a0a;   /* near-black */
+  --g1: #e7e5d6;
+  --g2: #B8001F;
+  --g3: #404040;
+  --g4: #ff9999;
+  --g5: #e8e8e8;   /* near-white */
+}
+
+/* Background Main Div */
+.container-color{
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: var(--g5); /* base canvas */
+  display: grid;           /* center */
+  place-items: center;     /* center */
+}
+
+.container-color-background div{
+  position: absolute;
+  border-radius: 3rem;
+  /* faster + smoother */
+  animation: gradient 3.6s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes gradient{
+  0%   { transform: scale(1) translate(0); }
+  50%  { transform: scale(1.24) translate(160px); }
+  100% { transform: scale(1.12) translate(-80px); }
+}
+
+/* layer 1: canvas */
+.container-color-background div:nth-child(1){
+  height: 100%;
+  width: 100%;
+  background: var(--g1);
+}
+
+/* layer 2 */
+.container-color-background div:nth-child(2){
+  height: 80%;
+  width: 70%;
+  background: var(--g2);
+  top: -12%;
+  right: -12%;
+  animation-delay: .15s;
+}
+
+/* layer 3 */
+.container-color-background div:nth-child(3){
+  height: 50%;
+  width: 75%;
+  background: var(--g4);
+  bottom: -10%;
+  left: -5%;
+  animation-delay: .45s;
+}
+
+/* layer 4 */
+.container-color-background div:nth-child(4){
+  height: 65%;
+  width: 80%;
+  background: var(--g1);
+  bottom: -15%;
+  right: -10%;
+  animation-delay: .75s;
+}
+
+/* layer 5 */
+.container-color-background div:nth-child(5){
+  height: 70%;
+  width: 65%;
+  background: var(--g5);
+  bottom: 0%;
+  right: -30%;
+  animation-delay: 1s;
+}
+
+/* soft frosting (still grayscale) */
+.container-color-background::after{
+  position: absolute;
+  content: '';
+  inset: 0;
+  backdrop-filter: blur(110px);
+  -webkit-backdrop-filter: blur(110px);
+}
+
+/* Accessibility: disable motion if user prefers */
+@media (prefers-reduced-motion: reduce){
+  .container-color-background div { animation: none; }
+}
+
+.on-container-color{
+  position: relative;
+  z-index: 2;              /* above blur + blobs */
+  margin: 0;
+  line-height: 1;
+  font-family: CashDisplay;  
+  align-items: center;  
+  width: min(92vw, 720px);
+}
+
+.content{
+  border: black 2px;
+}
+
+.message-box {
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: auto; /* Or any other fixed width */
+  margin-left: auto;
+  margin-right: auto;
+
+  
+}
+.message-box {
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: white;
+  height: 90vh;            /* slightly smaller than full screen */
+  width: 80vw;             /* 80% of screen width */
+  margin: 5vh auto;        /* centers it vertically & horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.messages{
+  overflow-y: scroll;
+  flex: 1;
+  width: 90%;
+  font-family: "Spotify-Bold";  
+} 
+
+.inputs{
+  padding:10px;
+  display:flex;
+}
+
+.input-box{
+  font-family: "Spotify-Bold";  
+  width: 100vw;
+  padding: 0.625rem 1.25rem;            /* py-2.5 px-5 */
+  margin-right: 0.5rem;                 /* me-2 */
+  margin-bottom: 0.5rem;                /* mb-2 */
+  font-size: 0.875rem;                  /* text-sm */
+  font-weight: 500;                     /* font-medium */
+  color: black;                       /* text-gray-900 */
+  background-color: #ffffff;            /* bg-white */
+  border-color: black;
+  border-radius: 0.5rem;                /* rounded-lg */
+  border: 1px solid #e5e7eb;            /* border-gray-200 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.input-box:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px red; 
+  border-radius: 0.5rem;       /* subtle focus ring */
+}
+
+.send-btn {
+  padding: 0.625rem 1.25rem;            /* py-2.5 px-5 */
+  margin-right: 0.5rem;                 /* me-2 */
+  margin-bottom: 0.5rem;                /* mb-2 */
+  font-size: 0.875rem;                  /* text-sm */
+  font-weight: 500;                     /* font-medium */
+  color: #111827;                       /* text-gray-900 */
+  background-color: #ffffff;            /* bg-white */
+  border-radius: 0.5rem;                /* rounded-lg */
+  border: 1px solid #e5e7eb;            /* border-gray-200 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.send-btn:hover {
+  background-color: #f3f4f6;            /* hover:bg-gray-100 */
+  color: #1d4ed8;                       /* hover:text-blue-700 */
+}
+
+.send-btn:focus {
+  outline: none;                        /* focus:outline-none */
+  z-index: 10;                          /* focus:z-10 */
+  box-shadow: 0 0 0 2px #f3f4f6;        /* focus:ring-4 focus:ring-gray-100 */
+}
+
+.container-color-background::after{
+  position: absolute;
+  content: '';
+  inset: 0;
+  backdrop-filter: blur(110px);
+  -webkit-backdrop-filter: blur(110px);
+  pointer-events: none;        /* 👈 let clicks pass through */
+}
+
+.content{
+  position: relative;
+  z-index: 2;                  /* above the blur layer */
+}
+
+input::placeholder { 
+  font-weight: 400; 
+  opacity: 0.9; 
+}
+
+.chat-title{
+  font-size: 100px;
+}
+
+.chat-sub-title{
+  font-size: 25px;
+}
+.name-section{  
+  margin-top: 20px;
+  width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+
+.room-join-section{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+
+.divider-section{
+  margin: 10px auto;
+  width: 90%;
+  margin-top: 10px;
+}
+
+
+.capacity-section{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 90%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+.create-room-btn{
+  width: 70%;          /* takes up 90% of the parent (the card) */
+  margin-left: auto;   /* centers it */
+  margin-right: auto;  /* centers it */
+}
+.error {
+  color: #ff7b7b;           /* soft red */
+  font-weight: 500;
+  text-align: center;
+  margin-top: 20px;
+  letter-spacing: 0.5px;
+}
+
+
+.Enter-text{
+  size: 100px;
+  text-color: black;
+}

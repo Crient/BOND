@@ -1,0 +1,227 @@
+@font-face {
+  font-family: Spotify-Bold;
+  src: url(font/CircularSpotifyText-Bold.otf);
+}
+
+* {
+  font-family: "Spotify-Bold";  
+}
+body {
+  background-color: #f9fafb;
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+}
+
+.current_members-section{
+  color: blue;
+}
+
+.Members-alter-section{
+  padding-left: 10px;
+}
+
+.message-box {
+  border-color: black;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: auto; /* Or any other fixed width */
+  margin-left: auto;
+  margin-right: auto;
+
+  
+}
+.message-box {
+  border: 1px solid #B6B6B6;
+  border-radius: 10px;
+  background-color: whitesmoke;
+  height: 90vh;            /* slightly smaller than full screen */
+  width: 95vw;             /* 80% of screen width */
+  margin: 5vh auto;        /* centers it vertically & horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.messages{
+  overflow-y: scroll;
+  flex: 1;
+  width: 90%;
+  font-family: "Spotify-Bold";  
+} 
+
+.inputs{
+  padding:10px;
+  display:flex;
+}
+
+.input-box{
+  font-family: "Spotify-Bold";  
+  width: 100vw;
+  padding: 0.625rem 1.25rem;            /* py-2.5 px-5 */
+  margin-right: 0.5rem;                 /* me-2 */
+  margin-bottom: 0.5rem;                /* mb-2 */
+  font-size: 0.875rem;                  /* text-sm */
+  font-weight: 500;                     /* font-medium */
+  color: black;                       /* text-gray-900 */
+  background-color: #ffffff;            /* bg-white */
+  border-color: black;
+  border-radius: 0.5rem;                /* rounded-lg */
+  border: 1px solid #e5e7eb;            /* border-gray-200 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.input-box:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px red; 
+  border-radius: 0.5rem;       /* subtle focus ring */
+}
+
+.send-btn {
+  padding: 0.625rem 1.25rem;            /* py-2.5 px-5 */
+  margin-right: 0.5rem;                 /* me-2 */
+  margin-bottom: 0.5rem;                /* mb-2 */
+  font-size: 0.875rem;                  /* text-sm */
+  font-weight: 500;                     /* font-medium */
+  color: #111827;                       /* text-gray-900 */
+  background-color: #ffffff;            /* bg-white */
+  border-radius: 0.5rem;                /* rounded-lg */
+  border: 1px solid #e5e7eb;            /* border-gray-200 */
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.send-btn:hover {
+  background-color: #f3f4f6;            /* hover:bg-gray-100 */
+  color: #1d4ed8;                       /* hover:text-blue-700 */
+}
+
+.send-btn:focus {
+  outline: none;                        /* focus:outline-none */
+  z-index: 10;                          /* focus:z-10 */
+  box-shadow: 0 0 0 2px #f3f4f6;        /* focus:ring-4 focus:ring-gray-100 */
+}
+
+.title{
+  color: #B8001F;
+  padding-top: 0.5rem;
+  font-size: 50px;
+}
+
+
+.text {
+  display: flex;
+  justify-content: space-between; /* pushes text to left, time to far right */
+  align-items: flex-start;
+  width: 100%;
+  padding: 6px 16px; /* gives equal breathing room on both sides */
+  box-sizing: border-box;
+}
+
+
+/* Let the messages area scroll and wrap long words */
+.messages {
+  flex: 1;
+  width: 100%;                /* fills parent */
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  padding: 0;                 /* remove extra horizontal padding */
+  padding-left: 10px;
+}
+
+/* Make each message a 2-column row: text (fills) | time (auto) */
+.text{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+/* The message body can wrap and keep line breaks */
+.text .msg {
+  white-space: pre-wrap;
+}
+
+/* Keep the timestamp from wrapping */
+.muted{
+  font-size: 10px;
+  color: #9ca3af;
+  white-space: nowrap;
+  padding-right: 15px;
+  font-size: 10px;
+  color: darkgrey;
+}
+
+/* Your input was overflowing the box because of 100vw */
+.input-box{
+  width: 100%;   /* not 100vw */
+}
+
+.Members-alter-section {
+  width: 100%;
+  padding-right: 10px;
+}
+
+.Members-alter-section > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Members text */
+.current_members-section {
+  color: #1DB954;
+  font-weight: 600;
+  font-size: 15px; /* smaller text */
+  font-weight: bold;
+  margin-top: -10px;
+
+}
+
+/* Host control layout */
+.Members-alter-section .flex.items-center.gap-2 {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 10px;
+}
+
+/* Input */
+#newCapacity {
+  color: #000;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100px;        /* narrower width */
+  padding: 0.25rem 0.5rem;  /* smaller padding */
+  font-size: 0.75rem;  /* smaller font */
+}
+
+/* Button */
+#capBtn {
+  background-color: #16a34a; /* green-600 */
+  color: #fff;
+  font-weight: 500;
+  border-radius: 5px;
+  font-size: 0.8rem;       /* smaller font */
+  padding: 0.25rem 0.9rem; /* smaller size */
+  transition: background-color 0.2s ease;
+}
+
+#capBtn:hover {
+  background-color: #15803d; /* darker green hover */
+}
+
+.box-card{
+  width: 90%;
+  height: 80%;
+}
